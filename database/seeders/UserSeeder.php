@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
                 'user_username'=> 'superadmin',
                 'user_email' => 'SuperAdmin@admin.com',
                 'user_status_verifikasi' => 1,
+                'user_status_active' => 1,
                 'password' => Hash::make('password'),
                 'user_password_str' => 'password',
                 'user_role_id'  => 1,

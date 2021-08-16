@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable(false);
             $table->string('user_password_str')->nullable(false);
             $table->integer('user_status_verifikasi')->default(0);
+            $table->integer('user_status_active')->default(0);
             $table->integer('user_role_id')->unsigned();
             $table->string('user_role_name');
             $table->foreign('user_role_id')->references('role_id')->on('m_roles');

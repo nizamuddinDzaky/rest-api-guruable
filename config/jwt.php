@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'ttl' => 60,
+    'ttl' => 24,
 ];

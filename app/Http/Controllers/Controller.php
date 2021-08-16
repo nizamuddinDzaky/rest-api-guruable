@@ -33,7 +33,7 @@ class Controller extends BaseController
             'code'  => $code,
             "message" => $messages,
             "data" => $data
-        ])->withHeaders([
+        ], $code)->withHeaders([
             'Content-Type' => "JSON",
             'Header-Token' => $header_token,
         ]);

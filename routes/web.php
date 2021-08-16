@@ -19,10 +19,18 @@ $router->get('/', function () use ($router) {
 
 $router->group(['middleware' => 'auth','prefix' => 'api'], function ($router){
     $router->get('me', 'AuthController@me');
+
+    $router->group(['prefix' => 'teachers'], function () use ($router) {
+        $router->post('add', 'TeachersController@add');
+        $router->get('list', 'TeachersController@list');
+        $router->get('detail', 'TeachersController@detail');
+        $router->post('update', 'TeachersController@update');
+        $router->post('update-status-active', 'TeachersController@edit_status_active');
+        $router->post('update-status-verifikasi', 'TeachersController@edit_status_verifikasi');
+    });
 });
 
-$router->group(['prefix' => 'api'], function () use ($router) 
-{
+$router->group(['prefix' => 'api'], function () use ($router) {
    $router->post('register', 'AuthController@register');
    $router->post('login', 'AuthController@login');
    $router->get('list_role', 'RoleController@list_role');
