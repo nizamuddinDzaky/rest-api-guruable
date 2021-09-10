@@ -36,17 +36,18 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         try {
+            
             if ($this->auth->guard($guard)->guest()) {
-                throw new \Exception("Invalid Token");
+                throw new \Exception("Sesi Anda Telah Berakhir, Silahkan Login Ulang");
             }
             return $next($request);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'code'  => -999999,
-                "message" => "Token is Invalid",
+                'code'  => 401,
+                "message" => $e->getMessage(),
                 "data" => null
-            ], 401);
+            ]);
         }
         
     }

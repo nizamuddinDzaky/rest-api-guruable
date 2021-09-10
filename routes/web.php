@@ -28,6 +28,14 @@ $router->group(['middleware' => 'auth','prefix' => 'api'], function ($router){
         $router->post('update-status-active', 'TeachersController@edit_status_active');
         $router->post('update-status-verifikasi', 'TeachersController@edit_status_verifikasi');
     });
+
+    $router->group(['prefix' => 'class'], function () use ($router) {
+        $router->post('add', 'ClassController@add');
+        $router->get('list', 'ClassController@list');
+        $router->get('detail', 'ClassController@detail');
+        $router->post('update', 'ClassController@update');
+        $router->post('update-status', 'ClassController@edit_status_active');
+    });
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {

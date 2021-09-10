@@ -124,7 +124,6 @@ class TeachersController extends Controller
             $this->validate($request, [
                 'user_email' => 'required|string',
                 'user_username' => 'required|string',
-                'user_password' => 'required|string',
                 'teachers_name' => 'required|string',
                 'teachers_telpn' => 'required|string',
                 'teachers_id' => 'required|numeric',
@@ -132,7 +131,6 @@ class TeachersController extends Controller
                 'teachers_birth_place' => 'required|string',
                 'teachers_birth_date' => 'required|date_format:Y-m-d',
             ]);
-
             
             $teacher_model = MTeachersModel::find($request->teachers_id);
             $teacher_model->teachers_name = $request->teachers_name;
