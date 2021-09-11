@@ -32,7 +32,7 @@ class SectionController extends Controller
             $section_model->section_name =  $request->section_name;
             $section_model->section_code =  $request->section_code;
             $section_model->section_class_id =  $request->section_class_id;
-            $section_model->section_status = $request->class_status ?? 1;
+            $section_model->section_status = $request->section_status ?? 1;
 
             if(!$section_model->save()){
                 throw new \Exception("Gagal Menyimpan Data Section");
@@ -119,7 +119,6 @@ class SectionController extends Controller
             $section_model->section_name =  $request->section_name;
             $section_model->section_code =  $request->section_code;
             $section_model->section_class_id =  $request->section_class_id;
-            $section_model->section_status = $request->class_status ?? 1;
             if(!$section_model->save()){
                 throw new \Exception("Gagal Menyimpan Data Section");
             }
@@ -154,7 +153,7 @@ class SectionController extends Controller
                 throw new \Exception("Gagal Menyimpan Data Section");
             }
             $response = [
-                'detail_teacher'=>$section_model,
+                'detail_section'=>$section_model,
             ];
             DB::commit();
             return $this->success_response("Berhasil Mengambil Data", $response, $request->all());
