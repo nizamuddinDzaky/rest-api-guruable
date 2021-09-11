@@ -7,7 +7,8 @@ namespace App\Http\Controllers;
 use App\Models\MClassModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+// use Yajra\DataTables\DataTablesServiceProvider;
+use DataTables;
 class ClassController extends Controller
 {
     public function add(Request $request)
@@ -45,25 +46,19 @@ class ClassController extends Controller
             $search = $request->search;
             $limit = $request->limit;
             $offset = $request->offset;
+            $status = $request->class_status ;
 
             $query = MClassModel::select('m_class.*');
-            if($limit){
-                $query = $query->limit($limit);
+            if($status != null) {
+                $query = $query->where('class_status', $status);
             }
-
-            if($offset){
-                $query = $query->offset($offset);
-            }
-
+            $record_total = $query->count();
             if($search){
                 $query = $query->where('class_name', 'LIKE', "%{$search}%") 
                                 ->orWhere('class_code', 'LIKE', "%{$search}%");
             }
-            $list_class = $query->get();
-            $response = [
-                'list_class'=>$list_class,
-                'count_class' => count($list_class)
-            ];
+
+            $response = $this->build_respone_data_table($query, $limit, $offset, $record_total);
             DB::commit();
             return $this->success_response("Berhasil Mengambil Data", $response, $request->all());
         } catch(\Exception $e){
@@ -81,6 +76,9 @@ class ClassController extends Controller
             ]);
 
             $class = MClassModel::select('m_class.*')->where('m_class.class_id', $request->class_id)->first();
+            if(!$class){
+                throw new \Exception("Data Kelas Tidak Ditemukan");
+            }
             $response = [
                 'detail_class'=>$class,
             ];
@@ -103,7 +101,7 @@ class ClassController extends Controller
                 'class_code' =>'required|string',
             ]);
 
-            $class_model = new MClassModel;
+            $class_model = MClassModel::find($request->class_id);
             $class_model->class_name = $request->class_name;
             $class_model->class_status = $request->class_status ?? 1;
             $class_model->class_code = $request->class_code;
@@ -136,7 +134,7 @@ class ClassController extends Controller
                 throw new \Exception("Class ID ".$request->class_id);
             }
 
-            $class_model->class_status = $request->class_id;
+            $class_model->class_status = $request->class_status;
             if(!$class_model->save()){
                 throw new \Exception("Gagal Menyimpan Data User");
             }

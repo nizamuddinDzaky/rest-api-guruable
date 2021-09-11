@@ -71,26 +71,29 @@ class TeachersController extends Controller
             $offset = $request->offset;
 
             $query = MTeachersModel::select('m_teachers.*', 'm_users.*')->join('m_users', 'm_users.user_id' ,'=', 'm_teachers.teachers_user_id');
-            if($limit){
-                $query = $query->limit($limit);
-            }
 
-            if($offset){
-                $query = $query->offset($offset);
-            }
+            $record_total = $query->count();
+            // if($limit){
+            //     $query = $query->limit($limit);
+            // }
+
+            // if($offset){
+            //     $query = $query->offset($offset);
+            // }
 
             if($search){
                 $query = $query->where('teachers_name', 'LIKE', "%{$search}%") 
                                 ->orWhere('user_email', 'LIKE', "%{$search}%")
                                 ->orWhere('user_username', 'LIKE', "%{$search}%");
             }
-            $list_teacer = $query->get();
-            $response = [
-                'list_teacher'=>$list_teacer,
-                'count_teacher' => count($list_teacer)
-            ];
+            $response = $this->build_respone_data_table($query, $limit, $offset, $record_total);
+            // $list_teacer = $query->get();
+            // $response = [
+            //     'list_teacher'=>$list_teacer,
+            //     'count_teacher' => count($list_teacer)
+            // ];
             DB::commit();
-            return $this->success_response("Berhasil Menyimpan Data", $response, $request->all());
+            return $this->success_response("Berhasil Mengambil Data", $response, $request->all());
         } catch(\Exception $e){
             DB::rollback();
             return $this->failed_response($e->getMessage());
@@ -110,7 +113,7 @@ class TeachersController extends Controller
                 'detail_teacher'=>$teacher,
             ];
             DB::commit();
-            return $this->success_response("Berhasil Menyimpan Data", $response, $request->all());
+            return $this->success_response("Berhasil Mengambil Data", $response, $request->all());
         } catch(\Exception $e){
             DB::rollback();
             return $this->failed_response($e->getMessage());
