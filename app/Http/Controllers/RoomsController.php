@@ -128,25 +128,25 @@ class RoomsController extends Controller
         DB::beginTransaction();
         try {
             $this->validate($request, [
-                'section_id' => 'required|numeric',
-                'section_status' => 'required|numeric|in:0,1',
+                'room_id' => 'required|numeric',
+                'room_status' => 'required|numeric|in:0,1',
             ]);
 
-            $section_model = MSectionsModel::select('m_sections.*')->where('m_sections.section_id', $request->section_id)->with('section_class')->first();
+            $room_model = MRoomsModel::select('m_rooms.*')->where('m_rooms.room_id', $request->room_id)->first();
 
-            if(!$section_model){
-                throw new \Exception("Data Section Tidak Ditemukan");
+            if(!$room_model){
+                throw new \Exception("Data Ruangan Tidak Ditemukan");
             }
 
-            $section_model->section_status = $request->section_status;
-            if(!$section_model->save()){
-                throw new \Exception("Gagal Menyimpan Data Section");
+            $room_model->room_status = $request->room_status;
+            if(!$room_model->save()){
+                throw new \Exception("Gagal Menyimpan Data Ruangan");
             }
             $response = [
-                'detail_section'=>$section_model,
+                'detail_section'=>$room_model,
             ];
             DB::commit();
-            return $this->success_response("Berhasil Mengambil Data", $response, $request->all());
+            return $this->success_response("Berhasil Menyimpan Data", $response, $request->all());
         } catch(\Exception $e){
             DB::rollback();
             return $this->failed_response($e->getMessage());
