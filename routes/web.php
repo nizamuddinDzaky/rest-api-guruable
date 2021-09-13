@@ -52,6 +52,14 @@ $router->group(['middleware' => 'auth','prefix' => 'api'], function ($router){
         $router->post('update', 'RoomsController@update');
         $router->post('update-status', 'RoomsController@edit_status_active');
     });
+
+    $router->group(['prefix' => 'subjects'], function () use ($router) {
+        $router->post('add', 'SubjectsController@add');
+        $router->get('list', 'SubjectsController@list');
+        $router->get('detail', 'SubjectsController@detail');
+        $router->post('update', 'SubjectsController@update');
+        $router->post('update-status', 'SubjectsController@edit_status_active');
+    });
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
